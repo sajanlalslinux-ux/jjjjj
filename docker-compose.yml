@@ -1,11 +1,24 @@
-version: "3.9"
+version: '3'
 
 services:
-  web:
+
+  nginx:
     image: nginx:latest
-    container_name: nginx_html
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
-      - ./html:/usr/share/nginx/html:ro
-    restart: unless-stopped
+      - ./html:/usr/share/nginx/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: logindb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass123
+    ports:
+      - "3306:3306"
